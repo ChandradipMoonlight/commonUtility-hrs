@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.moonlight</groupId>
 	<artifactId>common-utility</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>common-utility</name>
 	<url>http://maven.apache.org</url>
