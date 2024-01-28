@@ -30,6 +30,18 @@ public class ReactiveWebclientServiceImpl implements ReactiveWebClientService{
     }
 
     @Override
+    public <T, S> Mono<ResponseEntity<T>> postMonoEntity(String url, S body, Class<T> tClass, HttpHeaders headers) {
+        return webClient
+                .post()
+                .uri(URI.create(url))
+                .bodyValue(body)
+                .headers(h->h.addAll(headers))
+                .retrieve()
+                .toEntity(tClass);
+
+    }
+
+    @Override
     public <T> Flux<T> getFlux(String url, Class<T> tClass, HttpHeaders headers) {
         return webClient.get()
                 .uri(URI.create(url))
@@ -66,18 +78,27 @@ public class ReactiveWebclientServiceImpl implements ReactiveWebClientService{
     }
 
     @Override
-    public <T, S> Mono<S> putMono(String url, T body, Class<S> clazz, HttpHeaders httpHeaders){
+    public <T, S> Mono<T> putMono(String url, S body, Class<T> clazz, HttpHeaders httpHeaders){
         return webClient.put()
                 .uri(URI.create(url))
                 .bodyValue(body)
                 .headers(h->h.addAll(httpHeaders))
                 .retrieve()
-                .bodyToMono(clazz)
-                .log();
+                .bodyToMono(clazz);
     }
 
     @Override
-    public <T, S> Flux<S> putFlux(String url, T body, Class<S> clazz, HttpHeaders httpHeaders){
+    public <T, S> Mono<ResponseEntity<T>> putMonoEntity(String url, S body, Class<T> tClass, HttpHeaders headers) {
+        return webClient.put()
+                .uri(URI.create(url))
+                .headers(h->h.addAll(headers))
+                .bodyValue(body)
+                .retrieve()
+                .toEntity(tClass);
+    }
+
+    @Override
+    public <T, S> Flux<T> putFlux(String url, S body, Class<T> clazz, HttpHeaders httpHeaders){
         return webClient.put()
                 .uri(URI.create(url))
                 .bodyValue(body)
